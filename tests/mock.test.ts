@@ -41,4 +41,58 @@ describe('Test suite /pet', () => {
 
     })
 
+    it('POST, PUT, DELETE  - can be added, update, deleted', async () => {
+        let petCreate = {
+            'id': 7,
+            "name": "Floppa",
+            "category": {
+                "id": 1,
+                "name": "Caracal"
+            },
+            "photoUrls": [
+                "https://i.natgeofe.com/n/5329307c-6c4a-40a8-a5ff-d38b8af2d929/caracal-thumbnail-nationalgeographic_2165629.jpg"
+            ],
+            "tags": [
+                {
+                    "id": 0,
+                    "name": "string"
+                }
+            ],
+            "status": "available"
+        }
+        let addedPet = await pet.addPet(petCreate)
+        assert.deepEqual(addedPet, petCreate)
+        // assert.deepEqual(addedPet, {
+        //     ...petCreate, // Взять все ключи из petCreate, ниже к этим ключам добавляем id
+        //     ///id: addedPet.id // Так как на выходе мы получаем объект с id
+        // })
+
+         let checkAddedPet = await pet.getById(addedPet.id)
+         assert.deepEqual(checkAddedPet, petCreate)
+
+         let petUpdate = {
+             "id": addedPet.id,
+             "name": "FloppaS",
+             "category": {
+                 "id": 1,
+                 "name": "Caracal"
+             },
+             "photoUrls": [
+                 "https://i.natgeofe.com/n/5329307c-6c4a-40a8-a5ff-d38b8af2d929/caracal-thumbnail-nationalgeographic_2165629.jpg"
+             ],
+             "tags": [
+                 {
+                     "id": 0,
+                     "name": "string"
+                 }
+             ],
+             "status": "available"
+         }
+         let updatePet = await pet.updatePet(petUpdate)
+         assert.deepEqual(updatePet, petUpdate)
+
+         await pet.deletePet(petCreate.id)
+    })
+
+
 })
