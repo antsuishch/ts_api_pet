@@ -1,26 +1,36 @@
-import got from 'got';
 import { URLSearchParams } from 'url';
+import { JsonRequest } from "../request";
+import got from "got";
 
 
 export class PetController {
+    
+    BASE_URI: string = `http://192.168.1.42:8080/api/v3/pet`
 
     async getById(id: number | string) {
-        const response = await got(`http://192.168.1.42:8080/api/v3/pet/${id}`)
-        return JSON.parse(response.body)
+         return (
+            await new JsonRequest()
+                .url(`${this.BASE_URI}/${id}`)
+                .send()
+         ).body
     }
 
     async findByTag(tags: string | string[]) {
-        let response = await got('http://192.168.1.42:8080/api/v3/pet/findByTags', {
-            searchParams: new URLSearchParams({tags}) //tags: tags
-        })
-        return JSON.parse(response.body)
+            return (
+                await new JsonRequest()
+                 .url(`${this.BASE_URI}/findByTags`)
+                 .searchParams(new URLSearchParams({ tags }))
+                 .send()
+            ).body
     }
 
     async findByStatus(status: string | string[]) {
-        let response = await got('http://192.168.1.42:8080/api/v3/pet/findByStatus', {
-            searchParams: new URLSearchParams({status})
-        })
-        return JSON.parse(response.body)
+        return (
+            await new JsonRequest()
+                .url(`${this.BASE_URI}/findByStatus`)
+                .searchParams(new URLSearchParams({ status} ))
+                .send()
+        ).body
     }
 
     async addPet(pet: {
@@ -38,15 +48,17 @@ export class PetController {
             }[],
         "status": string
     }) {
-        let response = await got('http://192.168.1.42:8080/api/v3/pet', {
-            method: 'POST',
-            json: pet
-        })
-        return JSON.parse(response.body)
+        return (
+           await new JsonRequest()
+               .url(`${this.BASE_URI}`)
+               .method('POST')
+               .body(pet)
+               .send()
+        ).body
     }
 
     async deletePet(id: number | string) {
-        await got.delete(`http://192.168.1.42:8080/api/v3/pet/${id}`)
+        await got.delete(`${this.BASE_URI}/${id}`)
     }
 
     async updatePet(pet: {
@@ -64,10 +76,14 @@ export class PetController {
             }[],
         "status": string
     }) {
-        let response = await got('http://192.168.1.42:8080/api/v3/pet', {
-            method: 'PUT',
-            json: pet
-        })
-        return JSON.parse(response.body)
+        return (
+            await new JsonRequest()
+                .url(`${this.BASE_URI}`)
+                .method('PUT')
+                .body(pet)
+                .send()
+        ).body
     }
 }
+
+

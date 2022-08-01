@@ -43,7 +43,7 @@ describe('Test suite /pet', () => {
 
     it('POST, PUT, DELETE  - can be added, update, deleted', async () => {
         let petCreate = {
-            'id': 7,
+            'id': 89,
             "name": "Floppa",
             "category": {
                 "id": 1,
@@ -71,7 +71,7 @@ describe('Test suite /pet', () => {
          assert.deepEqual(checkAddedPet, petCreate)
 
          let petUpdate = {
-             "id": addedPet.id,
+             "id": 89,
              "name": "FloppaS",
              "category": {
                  "id": 1,
@@ -91,7 +91,7 @@ describe('Test suite /pet', () => {
          let updatePet = await pet.updatePet(petUpdate)
          assert.deepEqual(updatePet, petUpdate)
 
-         await pet.deletePet(petCreate.id)
+        await pet.deletePet(89)
     })
 
 
